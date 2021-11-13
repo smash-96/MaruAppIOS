@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from "react";
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,17 +7,17 @@ import {
   TextInput,
   ActivityIndicator,
   Alert,
-} from "react-native";
-import { Avatar, Button } from "react-native-elements";
-import UserAvatar from "../../Custom/UserAvatar/UserAvatar";
-import deviceStorage from "../../Utils/AuthDeviceStorage";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import { auth, db } from "../../../firebase/firebaseConfig";
+} from 'react-native';
+import {Avatar, Button} from 'react-native-elements';
+import UserAvatar from '../../Custom/UserAvatar/UserAvatar';
+import deviceStorage from '../../Utils/AuthDeviceStorage';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
+import {auth, db} from '../../../firebase/firebaseConfig';
 //import firestore from "@react-native-firebase/firestore";
-import storage from "@react-native-firebase/storage";
-import dynamic_styles from "./styles";
-import I18n from "../../../localization/utils/language";
-import { useDispatch, useSelector } from "react-redux";
+import storage from '@react-native-firebase/storage';
+import dynamic_styles from './styles';
+import I18n from '../../../localization/utils/language';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   setUserType,
   setUserPhoto,
@@ -27,7 +27,7 @@ import {
   setUserGender,
   setUserAge,
   setFirstSignup,
-} from "../../../slices/userInfoSlice";
+} from '../../../slices/userInfoSlice';
 import {
   selectUserPhoto,
   selectUserType,
@@ -37,13 +37,13 @@ import {
   selectUserGender,
   selectUserAge,
   selectFirstSignup,
-} from "../../../slices/userInfoSlice";
-import { selectActiveRequestData } from "../../../slices/helpRequestSlice";
-import { useNavigation } from "@react-navigation/native";
-import Picker from "../../Custom/Picker";
-import { Icon } from "react-native-elements";
+} from '../../../slices/userInfoSlice';
+import {selectActiveRequestData} from '../../../slices/helpRequestSlice';
+import {useNavigation} from '@react-navigation/native';
+import Picker from '../../Custom/Picker';
+import {Icon} from 'react-native-elements';
 
-const ProfileScreen = (props) => {
+const ProfileScreen = props => {
   const navigation = useNavigation();
   const styles = dynamic_styles();
   const dispatch = useDispatch();
@@ -58,9 +58,9 @@ const ProfileScreen = (props) => {
   const firstSignup = useSelector(selectFirstSignup);
 
   const baseAvatar =
-    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
-  const [image, setImage] = useState(baseAvatar || "");
-  const [profilePic, setProfilePic] = useState(baseAvatar || "");
+    'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+  const [image, setImage] = useState(baseAvatar || '');
+  const [profilePic, setProfilePic] = useState(baseAvatar || '');
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
   const [profileLock, setProfileLock] = useState(true);
@@ -71,38 +71,38 @@ const ProfileScreen = (props) => {
   const [age, setAge] = useState(null);
   const [btnDisable, setBtnDisable] = useState(false);
   const options_gender = [
-    <Text style={styles.action_sheet}>{I18n.t("profile.sheet1.male")}</Text>,
-    <Text style={styles.action_sheet}>{I18n.t("profile.sheet1.female")}</Text>,
-    <Text style={{ fontWeight: "bold" }}>{I18n.t("profile.cancel")}</Text>,
+    <Text style={styles.action_sheet}>{I18n.t('profile.sheet1.male')}</Text>,
+    <Text style={styles.action_sheet}>{I18n.t('profile.sheet1.female')}</Text>,
+    <Text style={{fontWeight: 'bold'}}>{I18n.t('profile.cancel')}</Text>,
   ];
   const options_type = [
-    <Text style={styles.action_sheet}>{I18n.t("profile.sheet2.helper")}</Text>,
-    <Text style={styles.action_sheet}>{I18n.t("profile.sheet2.helpee")}</Text>,
-    <Text style={{ fontWeight: "bold" }}>{I18n.t("profile.cancel")}</Text>,
+    <Text style={styles.action_sheet}>{I18n.t('profile.sheet2.helper')}</Text>,
+    <Text style={styles.action_sheet}>{I18n.t('profile.sheet2.helpee')}</Text>,
+    <Text style={{fontWeight: 'bold'}}>{I18n.t('profile.cancel')}</Text>,
   ];
   const [gender_placeHolder, set_gender_placeHolder] = useState([
-    "Select your gender",
+    'Select your gender',
   ]);
   const [type_placeHolder, set_type_placeHolder] = useState([
-    "Select your type",
+    'Select your type',
   ]);
 
-  const [gender, setGender] = useState("");
-  const [uType, setUType] = useState("");
+  const [gender, setGender] = useState('');
+  const [uType, setUType] = useState('');
 
   const getPickerValues = (index, picker_type) => {
-    if (picker_type == "Gender") {
+    if (picker_type == 'Gender') {
       if (index == 0) {
-        setGender("Male");
+        setGender('Male');
       } else {
-        setGender("Female");
+        setGender('Female');
       }
       set_gender_placeHolder(null);
     } else {
       if (index == 0) {
-        setUType("helper");
+        setUType('helper');
       } else {
-        setUType("helpee");
+        setUType('helpee');
       }
       set_type_placeHolder(null);
     }
@@ -113,17 +113,17 @@ const ProfileScreen = (props) => {
       userPhoto !== null &&
       userPhoto != baseAvatar &&
       userFname !== null &&
-      userFname !== "" &&
+      userFname !== '' &&
       userLname !== null &&
-      userLname !== "" &&
+      userLname !== '' &&
       userAddress !== null &&
-      userAddress !== "" &&
+      userAddress !== '' &&
       userGender !== null &&
-      userGender !== "" &&
+      userGender !== '' &&
       userAge !== null &&
-      userAge !== "" &&
+      userAge !== '' &&
       userType !== null &&
-      userType !== ""
+      userType !== ''
     ) {
       return true;
     }
@@ -138,28 +138,26 @@ const ProfileScreen = (props) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: I18n.t("profile.header"),
-      headerStyle: { backgroundColor: "#2c88d1" },
-      headerTitleStyle: { color: "white" },
+      title: I18n.t('profile.header'),
+      headerStyle: {backgroundColor: '#2c88d1'},
+      headerTitleStyle: {color: 'white'},
       headerLeft: () => (
-        <View style={{ marginLeft: 20 }}>
+        <View style={{marginLeft: 20}}>
           {profileLock === false ? (
             <TouchableOpacity
               onPress={() => navigation.toggleDrawer()}
-              activeOpacity={0.5}
-            >
+              activeOpacity={0.5}>
               <Icon name="menu" size={34} />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               onPress={() => {
                 Alert.alert(
-                  I18n.t("profile.alert2.header"),
-                  I18n.t("profile.alert2.text")
+                  I18n.t('profile.alert2.header'),
+                  I18n.t('profile.alert2.text'),
                 );
               }}
-              activeOpacity={0.5}
-            >
+              activeOpacity={0.5}>
               <Icon name="menu" color="red" size={34} />
             </TouchableOpacity>
           )}
@@ -173,11 +171,11 @@ const ProfileScreen = (props) => {
         </View>
       ),
       headerRight: () => (
-        <View style={{ marginRight: 20 }}>
+        <View style={{marginRight: 20}}>
           <TouchableOpacity>
             <Avatar
               rounded
-              source={require("../../../assets/MessageLogo.png")}
+              source={require('../../../assets/MessageLogo.png')}
             />
           </TouchableOpacity>
         </View>
@@ -201,7 +199,7 @@ const ProfileScreen = (props) => {
     }
   }, [userPhoto, profilePic]);
 
-  const setProfilePicture = (img) => {
+  const setProfilePicture = img => {
     setImage(img);
   };
 
@@ -215,11 +213,11 @@ const ProfileScreen = (props) => {
 
     if (checkProfileComplete() === true) {
       setBtnDisable(true);
-      console.log("firstSignup", firstSignup);
-      if (firstSignup !== "true") {
+      console.log('firstSignup', firstSignup);
+      if (firstSignup !== 'true') {
         Alert.alert(
-          "Profile Completed",
-          "Your profile is now complete. You can navigate through it by pressing the menu icon on top left."
+          'Profile Completed',
+          'Your profile is now complete. You can navigate through it by pressing the menu icon on top left.',
         );
       }
     }
@@ -228,13 +226,13 @@ const ProfileScreen = (props) => {
   const uploadImage = async () => {
     if (image != baseAvatar) {
       const pathToFile = image;
-      console.log("pathToFile", pathToFile);
-      let filename = pathToFile.substring(pathToFile.lastIndexOf("/") + 1);
+      console.log('pathToFile', pathToFile);
+      let filename = pathToFile.substring(pathToFile.lastIndexOf('/') + 1);
 
       // Add timestamp to File Name
-      const extension = filename.split(".").pop();
-      const name = filename.split(".").slice(0, -1).join(".");
-      filename = name + Date.now() + "." + extension;
+      const extension = filename.split('.').pop();
+      const name = filename.split('.').slice(0, -1).join('.');
+      filename = name + Date.now() + '.' + extension;
 
       //setUploading(true);
       setTransferred(0);
@@ -242,14 +240,14 @@ const ProfileScreen = (props) => {
       const reference = storage().ref(filename);
       const task = reference.putFile(pathToFile);
 
-      task.on("state_changed", (taskSnapshot) => {
+      task.on('state_changed', taskSnapshot => {
         console.log(
-          `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`
+          `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
         );
 
         setTransferred(
           Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
-            100
+            100,
         );
       });
 
@@ -271,8 +269,8 @@ const ProfileScreen = (props) => {
       }
     } else {
       Alert.alert(
-        "No Image Selected!",
-        "Your profile cannot be created without an image!"
+        'No Image Selected!',
+        'Your profile cannot be created without an image!',
       );
       return null;
     }
@@ -281,7 +279,7 @@ const ProfileScreen = (props) => {
   const submit = async () => {
     if (!activeRequestData) {
       setUploading(true);
-      const cRef = db.collection("Users").doc(auth?.currentUser?.uid);
+      const cRef = db.collection('Users').doc(auth?.currentUser?.uid);
       cRef.update({
         fname: fname,
         lname: lname,
@@ -307,7 +305,7 @@ const ProfileScreen = (props) => {
           });
           dispatch(setUserPhoto(photoUrl));
 
-          auth.currentUser.updateProfile({ photoURL: photoUrl });
+          auth.currentUser.updateProfile({photoURL: photoUrl});
         }
       }
       // else {
@@ -319,8 +317,8 @@ const ProfileScreen = (props) => {
       //   auth.currentUser.updateProfile({ photoURL: null });
       // }
 
-      deviceStorage.setFirstSignup("true");
-      dispatch(setFirstSignup("true"));
+      deviceStorage.setFirstSignup('true');
+      dispatch(setFirstSignup('true'));
 
       // if (checkProfileComplete() === true) {
       //   setBtnDisable(true);
@@ -340,33 +338,33 @@ const ProfileScreen = (props) => {
       //   //setProfileLock(true);
       // }
 
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 2000));
       setUploading(false);
 
-      if (firstSignup === "true") {
+      if (firstSignup === 'true') {
         Alert.alert(
-          I18n.t("profile.alert1.header"),
-          I18n.t("profile.alert1.text")
+          I18n.t('profile.alert1.header'),
+          I18n.t('profile.alert1.text'),
         );
       }
     } else {
       Alert.alert(
-        I18n.t("profile.alert3.header"),
-        I18n.t("profile.alert3.text")
+        I18n.t('profile.alert3.header'),
+        I18n.t('profile.alert3.text'),
       );
     }
   };
 
-  const setDisableBtnFromPickerChild = (child) => {
+  const setDisableBtnFromPickerChild = child => {
     if (checkProfileComplete() === true) {
       // comparing equal because state is getting set after this function is execcuted
-      if (child === "userType") {
+      if (child === 'userType') {
         if (userType === uType) {
           setBtnDisable(false);
         } else {
           setBtnDisable(true);
         }
-      } else if (child === "avatar") {
+      } else if (child === 'avatar') {
         if (userPhoto !== image) {
           setBtnDisable(false);
         } else {
@@ -379,8 +377,10 @@ const ProfileScreen = (props) => {
   //
   return (
     <KeyboardAwareScrollView
-      style={{ paddingTop: "10%", backgroundColor: "#effdfe" }}
-    >
+      enableOnAndroid={true}
+      keyboardShouldPersistTaps={'handled'}
+      enableResetScrollToCoords={false}
+      style={{paddingTop: '10%', backgroundColor: '#effdfe'}}>
       <View>
         {/* PROFILE PICTURE */}
         <UserAvatar
@@ -391,7 +391,7 @@ const ProfileScreen = (props) => {
         <View>
           {/* First Name */}
           <View style={styles.singleRow}>
-            <Text style={styles.left_fields}>{I18n.t("profile.fname")}</Text>
+            <Text style={styles.left_fields}>{I18n.t('profile.fname')}</Text>
             <Text style={styles.fields}>{fname}</Text>
 
             {/* <TextInput
@@ -405,7 +405,7 @@ const ProfileScreen = (props) => {
 
           {/* Last Name */}
           <View style={styles.singleRow}>
-            <Text style={styles.left_fields}>{I18n.t("profile.lname")}</Text>
+            <Text style={styles.left_fields}>{I18n.t('profile.lname')}</Text>
             <Text style={styles.fields}>{lname}</Text>
 
             {/* <TextInput
@@ -431,13 +431,13 @@ const ProfileScreen = (props) => {
 
           {/* Address  */}
           <View style={styles.singleRow}>
-            <Text style={styles.left_fields}>{I18n.t("profile.address")}</Text>
+            <Text style={styles.left_fields}>{I18n.t('profile.address')}</Text>
             {userAddress !== null ? (
               <Text style={styles.fields}>{address}</Text>
             ) : (
               <TextInput
                 style={styles.fields}
-                onChangeText={(val) => {
+                onChangeText={val => {
                   setAddress(val);
                 }}
                 value={address}
@@ -449,15 +449,15 @@ const ProfileScreen = (props) => {
 
           {/* Gender */}
           <View style={styles.singleRow}>
-            <Text style={styles.left_fields}>{I18n.t("profile.gender")}</Text>
-            {userGender !== "" ? (
+            <Text style={styles.left_fields}>{I18n.t('profile.gender')}</Text>
+            {userGender !== '' ? (
               <Text style={styles.fields}>{gender}</Text>
             ) : (
               <Picker
                 myValue={gender}
                 getValues={getPickerValues}
                 options={options_gender}
-                title={I18n.t("profile.gender")}
+                title={I18n.t('profile.gender')}
                 myplaceholder={gender_placeHolder}
                 parentFunc={setDisableBtnFromPickerChild}
               />
@@ -466,14 +466,14 @@ const ProfileScreen = (props) => {
 
           {/* Age */}
           <View style={styles.singleRow}>
-            <Text style={styles.left_fields}>{I18n.t("profile.age")}</Text>
+            <Text style={styles.left_fields}>{I18n.t('profile.age')}</Text>
 
             {userAge !== null ? (
               <Text style={styles.fields}>{age}</Text>
             ) : (
               <TextInput
                 style={styles.dob}
-                onChangeText={(val) => {
+                onChangeText={val => {
                   setAge(val);
                 }}
                 value={age}
@@ -495,12 +495,12 @@ const ProfileScreen = (props) => {
 
           {/* User Type */}
           <View style={styles.singleRow}>
-            <Text style={styles.left_fields}>{I18n.t("profile.type")}</Text>
+            <Text style={styles.left_fields}>{I18n.t('profile.type')}</Text>
             <Picker
               myValue={uType}
               getValues={getPickerValues}
               options={options_type}
-              title={I18n.t("profile.type")}
+              title={I18n.t('profile.type')}
               myplaceholder={type_placeHolder}
               parentFunc={setDisableBtnFromPickerChild}
             />
@@ -510,31 +510,29 @@ const ProfileScreen = (props) => {
           {uploading === true ? (
             <View
               style={{
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
               {/* <Text>{transferred} % Completed</Text> */}
-              <Text>{I18n.t("profile.indicatorText")}</Text>
+              <Text>{I18n.t('profile.indicatorText')}</Text>
               <ActivityIndicator size="large" color="#0000ff" />
             </View>
           ) : (
             <View
               style={{
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
               <Button
                 disabled={btnDisable}
                 containerStyle={{
-                  margin: "10%",
+                  margin: '10%',
 
                   // borderRadius: 120,
                   // borderRadius: 70,
-                  width: "30%",
+                  width: '30%',
                 }}
-                title={I18n.t("profile.button")}
+                title={I18n.t('profile.button')}
                 onPress={submit}
               />
             </View>

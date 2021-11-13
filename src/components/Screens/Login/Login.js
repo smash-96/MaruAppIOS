@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   Text,
@@ -8,18 +8,18 @@ import {
   AppState,
   Keyboard,
   Platform,
-} from "react-native";
-import Authentication_Button from "../../Custom/AuthenticationButton";
-import { SocialIcon } from "react-native-elements";
-import { Container, Content } from "native-base";
-import dynamic_styles from "./LoginStyles";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import { auth, db } from "../../../firebase/firebaseConfig";
-import messaging from "@react-native-firebase/messaging";
-import I18n from "../../../localization/utils/language";
-import authManager from "../../Utils/AuthManager";
-import TNActivityIndicator from "../../Custom/TNActivityIndicator/TNActivityIndicator";
-import { useDispatch } from "react-redux";
+} from 'react-native';
+import Authentication_Button from '../../Custom/AuthenticationButton';
+import {SocialIcon} from 'react-native-elements';
+import {Container, Content} from 'native-base';
+import dynamic_styles from './LoginStyles';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
+import {auth, db} from '../../../firebase/firebaseConfig';
+import messaging from '@react-native-firebase/messaging';
+import I18n from '../../../localization/utils/language';
+import authManager from '../../Utils/AuthManager';
+import TNActivityIndicator from '../../Custom/TNActivityIndicator/TNActivityIndicator';
+import {useDispatch} from 'react-redux';
 import {
   setUserType,
   setUserPhoto,
@@ -29,27 +29,27 @@ import {
   setUserAddress,
   setUserGender,
   setUserAge,
-} from "../../../slices/userInfoSlice";
-import { setUserData, selectUserData } from "../../../slices/userAuthSlice";
-import { setActiveRequestData } from "../../../slices/helpRequestSlice";
-import { showMessage, hideMessage } from "react-native-flash-message";
+} from '../../../slices/userInfoSlice';
+import {setUserData, selectUserData} from '../../../slices/userAuthSlice';
+import {setActiveRequestData} from '../../../slices/helpRequestSlice';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 //import { activateKeepAwake, deactivateKeepAwake } from "expo-keep-awake";
-import { useNavigation } from "@react-navigation/native";
-import { Formik } from "formik";
-import * as yup from "yup";
+import {useNavigation} from '@react-navigation/native';
+import {Formik} from 'formik';
+import * as yup from 'yup';
 
 const loginSchema = yup.object({
   email: yup
     .string()
-    .required("Email cannot be empty")
+    .required('Email cannot be empty')
     .matches(
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      "Email not valid"
+      'Email not valid',
     ),
-  pass: yup.string().required("Password cannot be empty").min(8),
+  pass: yup.string().required('Password cannot be empty').min(8),
 });
 
-const Login = (props) => {
+const Login = props => {
   const styles = dynamic_styles();
   const [isLoading, setIsLoading] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -59,12 +59,12 @@ const Login = (props) => {
   // New code
   useEffect(() => {
     registerOnNotificationOpenedApp();
-    AppState.addEventListener("change", handleAppStateChange);
+    AppState.addEventListener('change', handleAppStateChange);
     tryToLoginFirst();
   }, []);
 
-  const handleAppStateChange = async (nextAppState) => {
-    console.log("handleAppStateChange", nextAppState);
+  const handleAppStateChange = async nextAppState => {
+    console.log('handleAppStateChange', nextAppState);
     // if (Platform.OS === "android") {
     //   if (nextAppState === "background") {
     //     deactivateKeepAwake();
@@ -74,10 +74,10 @@ const Login = (props) => {
     // }
     const intialNotification = await messaging().getInitialNotification();
 
-    if (intialNotification && Platform.OS === "android") {
+    if (intialNotification && Platform.OS === 'android') {
       console.log(
-        "Notification caused app to open from quit state:",
-        intialNotification
+        'Notification caused app to open from quit state:',
+        intialNotification,
       );
       // if (remoteMessage.data.type === "message") {
       //   props.navigation.replace(remoteMessage.data.screen, {
@@ -94,7 +94,7 @@ const Login = (props) => {
   const tryToLoginFirst = async () => {
     authManager
       .retrievePersistedAuthUser()
-      .then(async (response) => {
+      .then(async response => {
         if (response?.user) {
           const user = response.user;
           if (!user.emailVerified) {
@@ -102,11 +102,11 @@ const Login = (props) => {
             //   photoURL: user.photoUrl,
             // });
             const requestID = (
-              await db.collection("Users").doc(user.uid).get()
+              await db.collection('Users').doc(user.uid).get()
             ).data().helpRequestID;
-            if (requestID !== "null") {
+            if (requestID !== 'null') {
               const requestData = (
-                await db.collection("requests").doc(requestID).get()
+                await db.collection('requests').doc(requestID).get()
               ).data();
               dispatch(setActiveRequestData(requestData));
             } else {
@@ -117,7 +117,7 @@ const Login = (props) => {
             // delete user["createdAt"];
             // delete user["lastOnlineTimestamp"];
             //console.log("USER_NEW", user);
-            dispatch(setUserData({ user }));
+            dispatch(setUserData({user}));
 
             if (user.photoUrl) {
               dispatch(setUserPhoto(user.photoUrl));
@@ -125,12 +125,12 @@ const Login = (props) => {
             if (user.userType) {
               dispatch(setUserType(user.userType));
             } else {
-              dispatch(setUserType(""));
+              dispatch(setUserType(''));
             }
             if (user.Gender) {
               dispatch(setUserGender(user.Gender));
             } else {
-              dispatch(setUserGender(""));
+              dispatch(setUserGender(''));
             }
 
             if (user.fname) {
@@ -155,8 +155,8 @@ const Login = (props) => {
               index: 0,
               routes: [
                 {
-                  name: "MapStack",
-                  params: { user: user },
+                  name: 'MapStack',
+                  params: {user: user},
                 },
               ],
             });
@@ -165,19 +165,19 @@ const Login = (props) => {
         }
         setIsLoading(false);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
         setIsLoading(false);
       });
   };
 
   const registerOnNotificationOpenedApp = async () => {
-    console.log("registerOnNotificationOpenedApp");
-    messaging().onNotificationOpenedApp((remoteMessage) => {
+    console.log('registerOnNotificationOpenedApp');
+    messaging().onNotificationOpenedApp(remoteMessage => {
       if (remoteMessage) {
         console.log(
-          "Notification caused app to open from quit state:",
-          remoteMessage
+          'Notification caused app to open from quit state:',
+          remoteMessage,
         );
         // if (remoteMessage.data.type === "message") {
         //   props.navigation.replace(remoteMessage.data.screen, {
@@ -190,12 +190,12 @@ const Login = (props) => {
         // }
       }
     });
-    messaging().onMessage((remoteMessage) => {
+    messaging().onMessage(remoteMessage => {
       // if (remoteMessage && Platform.OS === "ios") {
       //   const userID = currentUser?.id || currentUser?.userID;
       //   updateUser(userID, { badgeCount: 0 });
       // }
-      if (remoteMessage && remoteMessage.data.type === "message") {
+      if (remoteMessage && remoteMessage.data.type === 'message') {
         // console.log(
         //   "current navigation route",
         //   navigation.getState().routeNames
@@ -203,9 +203,9 @@ const Login = (props) => {
         showMessage({
           message: remoteMessage.data.fname,
           description: remoteMessage.data.userMsg,
-          type: "default",
-          backgroundColor: "white", // background color
-          color: "black", // text color
+          type: 'default',
+          backgroundColor: 'white', // background color
+          color: 'black', // text color
         });
       }
     });
@@ -218,11 +218,11 @@ const Login = (props) => {
   // }, []);
 
   const login = (values, actions) => {
-    console.log("LOGIN");
+    console.log('LOGIN');
     setLoading(true);
     authManager
       .loginWithEmailAndPassword(values.email, values.pass)
-      .then(async (response) => {
+      .then(async response => {
         if (response?.user) {
           const user = response.user;
 
@@ -231,11 +231,11 @@ const Login = (props) => {
             //   photoURL: user.photoUrl,
             // });
             const requestID = (
-              await db.collection("Users").doc(user.uid).get()
+              await db.collection('Users').doc(user.uid).get()
             ).data().helpRequestID;
-            if (requestID !== "null") {
+            if (requestID !== 'null') {
               const requestData = (
-                await db.collection("requests").doc(requestID).get()
+                await db.collection('requests').doc(requestID).get()
               ).data();
               dispatch(setActiveRequestData(requestData));
             } else {
@@ -245,7 +245,7 @@ const Login = (props) => {
             // delete user["createdAt"];
             // delete user["lastOnlineTimestamp"];
             //console.log("USER_NEW", user);
-            dispatch(setUserData({ user }));
+            dispatch(setUserData({user}));
             //
             if (user.photoUrl) {
               dispatch(setUserPhoto(user.photoUrl));
@@ -253,12 +253,12 @@ const Login = (props) => {
             if (user.userType) {
               dispatch(setUserType(user.userType));
             } else {
-              dispatch(setUserType(""));
+              dispatch(setUserType(''));
             }
             if (user.Gender) {
               dispatch(setUserGender(user.Gender));
             } else {
-              dispatch(setUserGender(""));
+              dispatch(setUserGender(''));
             }
 
             if (user.fname) {
@@ -283,8 +283,8 @@ const Login = (props) => {
               index: 0,
               routes: [
                 {
-                  name: "MapStack",
-                  params: { user: user },
+                  name: 'MapStack',
+                  params: {user: user},
                 },
               ],
             });
@@ -292,24 +292,24 @@ const Login = (props) => {
             auth.signOut();
             setLoading(false);
             Alert.alert(
-              I18n.t("login.alert.header"),
-              I18n.t("login.alert.body"),
-              [I18n.t("login.alert.button")],
+              I18n.t('login.alert.header'),
+              I18n.t('login.alert.body'),
+              [I18n.t('login.alert.button')],
               {
                 cancelable: false,
-              }
+              },
             );
           }
         } else {
           setLoading(false);
-          console.log("SOME ERROR");
+          console.log('SOME ERROR');
           Alert.alert(
-            I18n.t("login.alert2.header"),
-            I18n.t("login.alert2.body"),
-            [I18n.t("login.alert.button")],
+            I18n.t('login.alert2.header'),
+            I18n.t('login.alert2.body'),
+            [I18n.t('login.alert.button')],
             {
               cancelable: false,
-            }
+            },
           );
         }
       });
@@ -318,25 +318,25 @@ const Login = (props) => {
   };
 
   const googleLogin = () => {
-    console.log("Google Signup");
+    console.log('Google Signup');
     setLoading(true);
-    authManager.loginOrSignUpWithGoogle().then((response) => {
+    authManager.loginOrSignUpWithGoogle().then(response => {
       if (response?.user) {
         const user = response.user;
-        dispatch(setUserData({ user }));
+        dispatch(setUserData({user}));
         Keyboard.dismiss();
         props.navigation.reset({
           index: 0,
           routes: [
             {
-              name: "MapStack",
+              name: 'MapStack',
               //params: { user: user }
             },
           ],
         });
       } else {
         setLoading(false);
-        Alert.alert("", response.error, [{ text: "OK" }], {
+        Alert.alert('', response.error, [{text: 'OK'}], {
           cancelable: false,
         });
       }
@@ -344,7 +344,7 @@ const Login = (props) => {
   };
 
   const signup = () => {
-    props.navigation.navigate("Signup");
+    props.navigation.navigate('Signup');
   };
 
   if (isLoading == true) {
@@ -352,38 +352,39 @@ const Login = (props) => {
   }
 
   return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView
+      enableOnAndroid={true}
+      keyboardShouldPersistTaps={'handled'}
+      enableResetScrollToCoords={false}>
       <Container>
         <Content
           contentContainerStyle={{
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             flex: 1,
-          }}
-        >
+          }}>
           {/* Footer Image */}
           <View style={styles.footerImage}>
-            <Image source={require("../../../assets/footLogin.png")} />
+            <Image source={require('../../../assets/footLogin.png')} />
           </View>
           {/* Logo at the top  */}
           <Image
-            source={require("../../../assets/Logo.png")}
+            source={require('../../../assets/Logo.png')}
             style={styles.logo}
           />
 
           <Formik
-            initialValues={{ email: "", pass: "" }}
+            initialValues={{email: '', pass: ''}}
             validationSchema={loginSchema}
-            onSubmit={login}
-          >
-            {(formikProps) => (
+            onSubmit={login}>
+            {formikProps => (
               <>
                 <TextInput
                   style={styles.txtInput}
-                  placeholder={I18n.t("login.emailPlaceholder")}
+                  placeholder={I18n.t('login.emailPlaceholder')}
                   type="email"
-                  onChangeText={formikProps.handleChange("email")}
-                  onBlur={formikProps.handleBlur("email")}
+                  onChangeText={formikProps.handleChange('email')}
+                  onBlur={formikProps.handleBlur('email')}
                   value={formikProps.values.email}
                   keyboardType="email-address"
                 />
@@ -393,10 +394,10 @@ const Login = (props) => {
 
                 <TextInput
                   style={styles.txtInput}
-                  placeholder={I18n.t("login.passPlaceholder")}
+                  placeholder={I18n.t('login.passPlaceholder')}
                   type="password"
                   secureTextEntry={true}
-                  onChangeText={formikProps.handleChange("pass")}
+                  onChangeText={formikProps.handleChange('pass')}
                   value={formikProps.values.pass}
                 />
 
@@ -406,10 +407,10 @@ const Login = (props) => {
 
                 <View style={styles.authenticationButton}>
                   <Authentication_Button
-                    title={I18n.t("login.login")}
-                    backGroundColor={"#2c88d1"}
-                    textColor={"#FFFFFF"}
-                    borderColor={"#2c88d1"}
+                    title={I18n.t('login.login')}
+                    backGroundColor={'#2c88d1'}
+                    textColor={'#FFFFFF'}
+                    borderColor={'#2c88d1'}
                     handlePress={formikProps.handleSubmit}
                   />
                 </View>
@@ -421,20 +422,18 @@ const Login = (props) => {
             <Text
               style={{
                 fontSize: 18,
-                fontWeight: "bold",
-              }}
-            >
-              {I18n.t("login.signupText")}
+                fontWeight: 'bold',
+              }}>
+              {I18n.t('login.signupText')}
               <Text
                 style={{
                   // fontSize: 16,
-                  fontWeight: "bold",
-                  color: "blue",
+                  fontWeight: 'bold',
+                  color: 'blue',
                 }}
-                onPress={signup}
-              >
-                {" "}
-                {I18n.t("login.eText")}
+                onPress={signup}>
+                {' '}
+                {I18n.t('login.eText')}
               </Text>
             </Text>
             {/* <Authentication_Button
