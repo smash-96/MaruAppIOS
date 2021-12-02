@@ -13,6 +13,17 @@ import { store } from "./store";
 import messaging from "@react-native-firebase/messaging";
 import RNCallKeep from "react-native-callkeep";
 
+messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+  console.log("Message handled in the background!", remoteMessage);
+
+  // if (
+  //   remoteMessage.data.type === "video" ||
+  //   remoteMessage.data.type === "audio"
+  // ) {
+  //   presentIncomingCall(remoteMessage);
+  // }
+});
+
 const maruApp = () => (
     <Provider store={store}>
       <App />

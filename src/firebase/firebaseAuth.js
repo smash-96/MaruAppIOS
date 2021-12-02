@@ -453,25 +453,27 @@ export const fetchAndStorePushTokenIfPossible = async (user) => {
     const settings = await messaging().requestPermission();
     if (settings) {
       const token = await messaging().getToken();
+      console.log("IOS TOKEN", token)
+
       updateUser(user.uid || user.userID, {
         pushToken: token,
-        pushKitToken: "",
+        //pushKitToken: "", // This is for callkit
         badgeCount: 0,
       });
     }
 
-    if (Platform.OS === "ios") {
-      VoipPushNotification.requestPermissions();
-      VoipPushNotification.registerVoipToken();
+    // if (Platform.OS === "ios") {
+    //   VoipPushNotification.requestPermissions();
+    //   VoipPushNotification.registerVoipToken();
 
-      VoipPushNotification.addEventListener("register", (token) => {
-        console.log("push kit token from ios", token);
+    //   VoipPushNotification.addEventListener("register", (token) => {
+    //     console.log("push kit token from ios", token);
 
-        updateUser(user.uid || user.userID, { pushKitToken: token });
-      });
-    }
+    //     updateUser(user.uid || user.userID, { pushKitToken: token });
+    //   });
+    // }
   } catch (error) {
-    console.log(error);
+    console.log("fetchAndStorePushTokenIfPossible ERROR", error);
   }
 };
 

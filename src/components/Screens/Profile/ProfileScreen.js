@@ -1,12 +1,13 @@
 import React, {useState, useLayoutEffect, useEffect} from 'react';
 import {
-  StyleSheet,
+  SafeAreaView,
   Text,
   View,
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
   Alert,
+  SafeAreaViewBase,
 } from 'react-native';
 import {Avatar, Button} from 'react-native-elements';
 import UserAvatar from '../../Custom/UserAvatar/UserAvatar';
@@ -42,6 +43,7 @@ import {selectActiveRequestData} from '../../../slices/helpRequestSlice';
 import {useNavigation} from '@react-navigation/native';
 import Picker from '../../Custom/Picker';
 import {Icon} from 'react-native-elements';
+import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 const ProfileScreen = props => {
   const navigation = useNavigation();
@@ -376,11 +378,17 @@ const ProfileScreen = props => {
 
   //
   return (
+    <SafeAreaView>
+
     <KeyboardAwareScrollView
       enableOnAndroid={true}
       keyboardShouldPersistTaps={'handled'}
       enableResetScrollToCoords={false}
-      style={{paddingTop: '10%', backgroundColor: '#effdfe'}}>
+      style={{
+        paddingTop: '10%',
+        backgroundColor: '#effdfe',
+        //paddingTop: Platform.OS === 'ios' ? getStatusBarHeight() : 0,
+      }}>
       <View>
         {/* PROFILE PICTURE */}
         <UserAvatar
@@ -540,6 +548,7 @@ const ProfileScreen = props => {
         </View>
       </View>
     </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 };
 

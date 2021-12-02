@@ -356,8 +356,8 @@ const Login = props => {
       enableOnAndroid={true}
       keyboardShouldPersistTaps={'handled'}
       enableResetScrollToCoords={false}>
-      <Container>
-        <Content
+      <View>
+        <View
           contentContainerStyle={{
             justifyContent: 'center',
             alignItems: 'center',
@@ -455,8 +455,8 @@ const Login = props => {
             style={{ backgroundColor: "#2c88d1" }}
             onPress={googleLogin}
           /> */}
-        </Content>
-      </Container>
+        </View>
+      </View>
       {loading && <TNActivityIndicator />}
     </KeyboardAwareScrollView>
   );

@@ -829,7 +829,7 @@ PODS:
     - React-Core
   - react-native-maps (0.28.1):
     - React-Core
-  - react-native-netinfo (6.1.0):
+  - react-native-netinfo (6.2.1):
     - React-Core
   - react-native-safe-area-context (3.2.0):
     - React-Core
@@ -910,7 +910,7 @@ PODS:
     - React
   - RNCPushNotificationIOS (1.10.1):
     - React-Core
-  - RNDeviceInfo (8.4.6):
+  - RNDeviceInfo (8.4.8):
     - React-Core
   - RNFastImage (8.5.11):
     - React-Core
@@ -989,7 +989,7 @@ PODS:
     - React-RCTImage
   - RNSVG (12.1.1):
     - React
-  - RNVectorIcons (8.1.0):
+  - RNVectorIcons (9.0.0):
     - React-Core
   - RNVoipPushNotification (3.3.0):
     - React-Core
@@ -1318,7 +1318,7 @@ SPEC CHECKSUMS:
   react-native-geolocation-service: 32e50a2e4e4518b51b829fdfe137562a672d95d2
   react-native-google-maps: 915cea64470a6e7581b782d8659bf8a7e2dee302
   react-native-maps: 60a75aa547d576fdb91be1f95113665215b59461
-  react-native-netinfo: 5a001e406317eaaf1e4846906650e107dadcaa72
+  react-native-netinfo: 3d3769f0d65de15c83a9bf1346f8be71de5a24bf
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-webrtc: 41526e4060dac373c18676f866962d4180ee47b9
   React-perflogger: 73732888d37d4f5065198727b167846743232882
@@ -1338,7 +1338,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: eb05c0284dd6b50b32f92fad55e2a41e03358c43
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNCPushNotificationIOS: 87b8d16d3ede4532745e05b03c42cff33a36cc45
-  RNDeviceInfo: d2df20ff25747778277a6aa8c749e8b53cf16a2a
+  RNDeviceInfo: 0400a6d0c94186d1120c3cbd97b23abc022187a9
   RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
   RNFBApp: 729c0666395b1953198dc4a1ec6deb8fbe1c302e
   RNFBAuth: 7718be1152f5d1d0bb970a8d33094d010f1ac21c
@@ -1353,7 +1353,7 @@ SPEC CHECKSUMS:
   RNReanimated: 65583befd5706cc9c86ae9a081786181ced37b93
   RNScreens: 4d79118be80f79fa1f4aa131909a1d6e86280af3
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
-  RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
+  RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
   RNVoipPushNotification: 14bb5a389588ea1cbee4706a55df99950687fd6d
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815

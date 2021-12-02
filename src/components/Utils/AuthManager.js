@@ -463,8 +463,12 @@ const getLocation = () => {
 
     let locPermissionDenied = await locationPermission();
     if (locPermissionDenied) {
+      console.log("LOCATION PERMISSION APPROVED")
       const location = await getCurrentLocation();
       resolve(location);
+    }
+    else{
+      console.log("LOCATION PERMISSION DENIED")
     }
 
     // setRegion(location.coords);

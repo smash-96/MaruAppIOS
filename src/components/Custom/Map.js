@@ -60,6 +60,7 @@ const Map = (props) => {
   useEffect(() => {
     // if (helperLocation && helpeeLocation) return;
     if (currentUser?.user?.location) {
+      console.log("GETTING LOCATION FROM HERE")
       setLatitude(currentUser.user.location.latitude);
       setLongitude(currentUser.user.location.longitude);
 
@@ -89,6 +90,7 @@ const Map = (props) => {
 
       //onCenter();
     } else {
+      
       getCurrentLocation().then((location) => {
         if (location) {
           setLatitude(location.latitude);
@@ -150,7 +152,7 @@ const Map = (props) => {
     // Tracking needed only for helpersds
     if (userType === "helper") {
       const location = await getCurrentLocation();
-      animate(location);
+      //animate(location);
       dispatch(
         setHelperLocation({
           latitude: location.latitude,
@@ -352,7 +354,7 @@ const Map = (props) => {
     return (
       <MapView
         ref={mapRef}
-        //provider={PROVIDER_GOOGLE}
+        provider={PROVIDER_GOOGLE}
         //style={tw`flex-1`}
         style={styles.map}
         initialRegion={getMapRegion()}
