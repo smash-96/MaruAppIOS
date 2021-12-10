@@ -3,23 +3,23 @@ import { StyleSheet, Text, View } from "react-native";
 import ActionSheet from "@alessiocancian/react-native-actionsheet";
 // NEW
 const Picker = (props) => {
-  useEffect(() => {}, selected_data);
-  const actionSheet = useRef(null);
-  const showActionSheet = () => {
-    actionSheet.current.show();
-  };
+  // useEffect(() => {}, selected_data);
+  const actionSheet = useRef();
+  
+  console.log("11 22 33 44 55s")
   const parent_value = props.myValue.length;
   const [selected_data, set_selected_data] = useState("");
   const setValue = (index, picker_type) => {
-    if (picker_type == "gender") {
+    console.log("11 22 33 44 55s 3333")
+    if (picker_type === "gender") {
       console.log("GENDER HERE!");
-      if (index == 0) {
+      if (index === 0) {
         set_selected_data("Male");
       } else {
         set_selected_data("Female");
       }
     } else {
-      if (index == 0) {
+      if (index === 0) {
         set_selected_data("helper");
         props.parentFunc("userType");
       } else {
@@ -28,6 +28,11 @@ const Picker = (props) => {
       }
     }
   };
+  const showActionSheet = ()=>{
+
+    if (actionSheet?.current)
+    actionSheet?.current?.show();
+  }
 
   return (
     <View>

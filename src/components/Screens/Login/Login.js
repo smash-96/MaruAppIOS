@@ -7,7 +7,11 @@ import {
   Alert,
   AppState,
   Keyboard,
+  ImageBackground,
   Platform,
+  StyleSheet,
+  ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import Authentication_Button from '../../Custom/AuthenticationButton';
 import {SocialIcon} from 'react-native-elements';
@@ -352,25 +356,53 @@ const Login = props => {
   }
 
   return (
-    <KeyboardAwareScrollView
-      enableOnAndroid={true}
-      keyboardShouldPersistTaps={'handled'}
-      enableResetScrollToCoords={false}>
-      <View>
-        <View
-          contentContainerStyle={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            flex: 1,
-          }}>
-          {/* Footer Image */}
-          <View style={styles.footerImage}>
-            <Image source={require('../../../assets/footLogin.png')} />
-          </View>
-          {/* Logo at the top  */}
+    <View
+      // enableOnAndroid={true}
+      // keyboardShouldPersistTaps={'handled'}
+      // enableResetScrollToCoords={false}
+      style={{
+        backgroundColor: '#f0ffff',
+      }}
+      // >s
+      // <View>
+      //   <View
+      //     contentContainerStyle={{
+      //       justifyContent: 'center',
+      //       alignItems: 'center',
+      //       flex: 1,
+      //     }}
+    >
+      {/* Footer Image */}
+      <View
+        style={{
+          resizeMode: 'contain',
+          position: 'absolute',
+          //   backgroundColor: 'green',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          alignContent: 'center',
+          bottom: 0,
+          width: '100%',
+        }}>
+        <ImageBackground
+          source={require('../../../assets/footLogin.png')}
+          style={{
+            height: 250,
+            width: '100%',
+          }}
+        />
+      </View>
+      {/* Logo at the top  */}
+      <KeyboardAwareScrollView
+        style={{
+          minHeight: '100%',
+          maxHeight: '100%',
+        }}>
+        <View style={mystyles.container}>
           <Image
             source={require('../../../assets/Logo.png')}
-            style={styles.logo}
+            resizeMode="center"
+            style={mystyles.image}
           />
 
           <Formik
@@ -378,7 +410,7 @@ const Login = props => {
             validationSchema={loginSchema}
             onSubmit={login}>
             {formikProps => (
-              <>
+              <View>
                 <TextInput
                   style={styles.txtInput}
                   placeholder={I18n.t('login.emailPlaceholder')}
@@ -414,52 +446,71 @@ const Login = props => {
                     handlePress={formikProps.handleSubmit}
                   />
                 </View>
-              </>
+              </View>
             )}
           </Formik>
-
-          <View>
+        </View>
+        <View style={{alignItems: 'center'}}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: 'bold',
+              alignItems: 'center',
+            }}>
+            {I18n.t('login.signupText')}
             <Text
               style={{
-                fontSize: 18,
+                // fontSize: 16,
                 fontWeight: 'bold',
-              }}>
-              {I18n.t('login.signupText')}
-              <Text
-                style={{
-                  // fontSize: 16,
-                  fontWeight: 'bold',
-                  color: 'blue',
-                }}
-                onPress={signup}>
-                {' '}
-                {I18n.t('login.eText')}
-              </Text>
+                color: 'blue',
+              }}
+              onPress={signup}>
+              {' '}
+              {I18n.t('login.eText')}
             </Text>
-            {/* <Authentication_Button
+          </Text>
+        </View>
+        {/* <Authentication_Button
               title={I18n.t("login.signup")}
               backGroundColor={"#FFFFFF"}
               textColor={"#2c88d1"}
               borderColor={"#2c88d1"}
               handlePress={signup}
             /> */}
-          </View>
+      </KeyboardAwareScrollView>
 
-          {/* <Text>- {I18n.t("login.or")} -</Text>
+      {/* <Text>- {I18n.t("login.or")} -</Text>
           <Text>{I18n.t("login.atext")} </Text> */}
 
-          {/* Google logo for sign in */}
-          {/* <SocialIcon
+      {/* Google logo for sign in */}
+      {/* <SocialIcon
             raised={true}
             type="google"
             style={{ backgroundColor: "#2c88d1" }}
             onPress={googleLogin}
           /> */}
-        </View>
-      </View>
       {loading && <TNActivityIndicator />}
-    </KeyboardAwareScrollView>
+      {/* </KeyboardAvoidingView> */}
+    </View>
+
+    // </KeyboardAwareScrollView>
   );
 };
-
+const mystyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: 250,
+    height: 250,
+    marginVertical: 10,
+  },
+  textTitle: {
+    fontSize: 40,
+    marginVertical: 10,
+  },
+  textBody: {},
+});
 export default Login;

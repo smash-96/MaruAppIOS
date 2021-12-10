@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Image, Text, View, TextInput, Alert, Keyboard} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Image, Text, View, KeyboardAvoidingView,ScrollView ,ImageBackground,StyleSheet,TextInput, Alert, Keyboard, TouchableWithoutFeedback} from 'react-native';
 import Authentication_Button from '../../Custom/AuthenticationButton';
 import {SocialIcon} from 'react-native-elements';
 import {Container, Content} from 'native-base';
@@ -20,6 +20,7 @@ import {
 import TNActivityIndicator from '../../Custom/TNActivityIndicator/TNActivityIndicator';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
+
 const signupSchema = yup.object({
   fname: yup.string().required('First Name cannot be empty'),
   lname: yup.string().required('Last Name cannot be empty'),
@@ -37,7 +38,7 @@ const Signup = props => {
   const styles = dynamic_styles();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-
+  const [keyboardDidShowListener  , setkeyboardDidShowListener]=useState()
   const signup = async (values, actions) => {
     console.log('Signup');
     setLoading(true);
@@ -128,28 +129,58 @@ const Signup = props => {
     props.navigation.goBack();
   };
 
-  return (
-    <KeyboardAwareScrollView
-      enableOnAndroid={true}
-      keyboardShouldPersistTaps={'handled'}
-      enableResetScrollToCoords={false}>
-      <Container>
-        <Content
-          contentContainerStyle={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            flex: 1,
-          }}>
-          {/* Footer Image */}
-          <View style={styles.footerImage}>
-            <Image source={require('../../../assets/footLogin.png')} />
-          </View>
-          {/* Logo at the top  */}
-          <Image
-            source={require('../../../assets/Logo.png')}
-            style={styles.logo}
-          />
+  // useEffect(()=>{
+  //   Keyboard.addListener('keyboardDidShow')
+  // })
 
+  return (
+    <View
+    
+      // enableOnAndroid={true}
+      // keyboardShouldPersistTaps={'handled'}
+      // enableResetScrollToCoords={false}
+      style=
+      {{
+ backgroundColor:'#f0ffff',
+ 
+      }}
+      >
+          {/* Footer Image */}
+          <View
+            style={{
+              resizeMode: 'contain',
+              position: 'absolute',
+              //   backgroundColor: 'green',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              alignContent: 'center',
+              bottom: 0,
+              width: '100%',
+            }}>
+        <ImageBackground
+          source={require('../../../assets/footLogin.png')}
+          style={{
+            height: 250,
+            width: '100%',
+          }}
+        />
+      </View>
+
+          <KeyboardAwareScrollView           
+          style={{
+            // backgroundColor:'red',
+            minHeight: '100%',
+            maxHeight: '100%',
+            }}>
+              {/* <TouchableWithoutFeedback>
+                <View> */}
+        <View style={mystyles.container}>
+        <Image
+          source={require('../../../assets/Logo.png')}
+          resizeMode="center"
+          style={mystyles.image}
+        />
+<View>
           <Formik
             initialValues={{fname: '', lname: '', email: '', pass: ''}}
             validationSchema={signupSchema}
@@ -222,7 +253,10 @@ const Signup = props => {
               </>
             )}
           </Formik>
-          <View>
+          </View>
+          </View>
+          
+<View style={{alignItems:'center'}}> 
             <Text
               style={{
                 fontSize: 18,
@@ -248,11 +282,31 @@ const Signup = props => {
               handlePress={login}
             /> */}
           </View>
-        </Content>
-      </Container>
+          {/* </View> */}
+          {/* </TouchableWithoutFeedback> */}
+          </KeyboardAwareScrollView>
+ 
       {loading && <TNActivityIndicator />}
-    </KeyboardAwareScrollView>
+      </View>
+
   );
 };
 
+const mystyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: 250,
+    height: 250,
+    marginVertical: 10,
+  },
+  textTitle: {
+    fontSize: 40,
+    marginVertical: 10,
+  },
+  textBody: {},
+});
 export default Signup;

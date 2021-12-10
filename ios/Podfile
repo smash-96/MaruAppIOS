@@ -8,6 +8,7 @@ pod 'Firebase/Functions'
 pod 'Firebase/Storage'
 
 platform :ios, '11.0'
+platform :macos, '10.14'
 
 target 'MaruAppIOS' do
 
