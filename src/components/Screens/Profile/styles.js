@@ -40,6 +40,11 @@ const dynamic_styles = () => {
       margin: 10,
       color: "#1998ff",
     },
+    right:{
+      paddingRight:0,
+      right:0,
+
+    },
     action_sheet: {
       color: "#1998ff",
       fontSize: 20,

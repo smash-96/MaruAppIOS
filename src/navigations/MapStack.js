@@ -69,7 +69,7 @@ function CustomDrawerContent(props) {
                 style={{
                   color: "#f9f9f9",
                   marginTop: "3%",
-                  fontFamily: "sans-serif-condensed",
+                  //fontFamily: "sans-serif-condensed",
                   fontSize: 20,
                 }}
               >
@@ -78,7 +78,7 @@ function CustomDrawerContent(props) {
               <Text
                 style={{
                   color: "#f9f9f9",
-                  fontFamily: "sans-serif-condensed",
+                  //fontFamily: "sans-serif-condensed",
                   fontSize: 15,
                 }}
               >

@@ -19,7 +19,10 @@ const dynamic_styles = () => {
       marginTop: 10,
       borderRadius: 12,
       borderWidth: 1.4,
-      width: '85%',
+
+      minWidth: '85%',
+      maxWidth: '85%',
+
       paddingVertical: 14,
       backgroundColor: '#ffffff',
       color: '#000000',
@@ -30,10 +33,11 @@ const dynamic_styles = () => {
     authenticationButton: {
       marginTop: 10,
       marginBottom: 10,
-      width: '85%',
+      minWidth: '85%',
+      maxWidth: '85%',
     },
     footerImage: {
-      marginTop: '5%',
+      // marginTop: '10%',
       position: 'absolute', //Here is the trick
       bottom: 0, //Here is the trick
     },
