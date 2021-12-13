@@ -540,6 +540,7 @@ const MapScreen = props => {
             // alignSelf: "flex-end",
             bottom: 30,
             right: 20,
+            zIndex:1
           }}
           onPress={() => doRefresh(prev => prev + 1)}>
           <Image

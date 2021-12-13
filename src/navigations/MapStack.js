@@ -23,6 +23,7 @@ import { auth } from "../firebase/firebaseConfig";
 import { useNavigation } from "@react-navigation/native";
 import { Icon } from "react-native-elements";
 import I18n from "../localization/utils/language";
+import deviceStorage from "../components/Utils/AuthDeviceStorage";
 function CustomDrawerContent(props) {
   const navigation = useNavigation();
   const userPhoto = useSelector(selectUserPhoto);
@@ -43,6 +44,7 @@ function CustomDrawerContent(props) {
     auth
       .signOut()
       .then(() => {
+        // deviceStorage.setFirstSignup('false'); //  necessary but figure out later
         navigation.replace("Login");
         console.log("Navigate to login!");
       })

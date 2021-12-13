@@ -203,6 +203,7 @@ const Map = (props) => {
               })
             );
           }
+          console.log("fetchLiveLocation Successfull")
         } catch (err) {
           //console.log("HELPEE ERROR", err);
           console.log("fetchLiveLocation Error", err);
@@ -243,6 +244,7 @@ const Map = (props) => {
         markerRef.current.animateMarkerToCoordinate(newCoordinate, 5000);
       }
     } else {
+      let coordinate = new AnimatedRegion(getMapRegion())
       coordinate.timing(newCoordinate).start();
     }
   };
@@ -300,7 +302,7 @@ const Map = (props) => {
           <MapViewDirections
             origin={helperLocation}
             destination={helpeeLocation}
-            apikey={GOOGLE_MAPS_APIKEY}
+            apikey={"AIzaSyAQnfLYsz4dKOn4i0FK-3LwoJsMTjzpFJw"}
             strokeWidth={3}
             strokeColor="black"
             resetOnChange={false}
@@ -364,7 +366,7 @@ const Map = (props) => {
           <MapViewDirections
             origin={helperLocation}
             destination={helpeeLocation}
-            apikey={GOOGLE_MAPS_APIKEY}
+            apikey={"AIzaSyAQnfLYsz4dKOn4i0FK-3LwoJsMTjzpFJw"}
             strokeWidth={3}
             strokeColor="black"
             //optimizeWaypoints={true}

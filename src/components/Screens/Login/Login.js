@@ -24,6 +24,8 @@ import I18n from '../../../localization/utils/language';
 import authManager from '../../Utils/AuthManager';
 import TNActivityIndicator from '../../Custom/TNActivityIndicator/TNActivityIndicator';
 import {useDispatch} from 'react-redux';
+import SplashScreen from 'react-native-splash-screen'
+
 import {
   setUserType,
   setUserPhoto,
@@ -101,7 +103,7 @@ const Login = props => {
       .then(async response => {
         if (response?.user) {
           const user = response.user;
-          if (!user.emailVerified) {
+          if (user.emailVerified) {
             // auth.currentUser.updateProfile({
             //   photoURL: user.photoUrl,
             // });
@@ -154,6 +156,8 @@ const Login = props => {
               dispatch(setUserAge(user.Age));
             }
             //
+            SplashScreen.hide();
+
             Keyboard.dismiss();
             props.navigation.reset({
               index: 0,
@@ -230,7 +234,7 @@ const Login = props => {
         if (response?.user) {
           const user = response.user;
 
-          if (!user.emailVerified) {
+          if (user.emailVerified) {
             // auth.currentUser.updateProfile({
             //   photoURL: user.photoUrl,
             // });

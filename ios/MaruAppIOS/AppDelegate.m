@@ -6,6 +6,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+//#import "RNSplashScreen.h"  
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -58,6 +59,8 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 {
   [FIRApp configure];
   [GMSServices provideAPIKey:@"AIzaSyAQnfLYsz4dKOn4i0FK-3LwoJsMTjzpFJw"];
+
+  //[RNSplashScreen show];
 #ifdef FB_SONARKIT_ENABLED
   InitializeFlipper(application);
 #endif

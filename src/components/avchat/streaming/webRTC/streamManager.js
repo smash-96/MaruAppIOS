@@ -259,8 +259,8 @@ export default class IMWebRTCStreamManager {
       if (this.peerConnections[recipientID]) {
         return this.peerConnections[recipientID];
       }
-      // const pc = new RTCPeerConnection(this.ntsToken);
-      const pc = new RTCPeerConnection(servers);
+      const pc = new RTCPeerConnection(this.ntsToken);
+      //const pc = new RTCPeerConnection(servers);
       pc.addStream(this.localStream);
 
       pc.onconnectionstatechange = (event) => {

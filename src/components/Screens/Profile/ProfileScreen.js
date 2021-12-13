@@ -1,16 +1,13 @@
 import React, {useState, useLayoutEffect, useEffect} from 'react';
 import {
-  SafeAreaView,
+  StyleSheet,
   Text,
   View,
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
   Alert,
-  SafeAreaViewBase,
 } from 'react-native';
-import {CheckBox} from 'react-native-elements';
-
 import {Avatar, Button} from 'react-native-elements';
 import UserAvatar from '../../Custom/UserAvatar/UserAvatar';
 import deviceStorage from '../../Utils/AuthDeviceStorage';
@@ -44,8 +41,8 @@ import {
 import {selectActiveRequestData} from '../../../slices/helpRequestSlice';
 import {useNavigation} from '@react-navigation/native';
 import Picker from '../../Custom/Picker';
+import DropDownPicker from 'react-native-dropdown-picker';
 import {Icon} from 'react-native-elements';
-import {getStatusBarHeight} from 'react-native-status-bar-height';
 
 const ProfileScreen = props => {
   const navigation = useNavigation();
@@ -90,14 +87,26 @@ const ProfileScreen = props => {
   const [type_placeHolder, set_type_placeHolder] = useState([
     'Select your type',
   ]);
-  const [helper, set_Helper] = useState(false);
-  const [helpee, set_Helpee] = useState(false);
+
   const [gender, setGender] = useState('');
   const [uType, setUType] = useState('');
 
-  const getPickerValues = (index, picker_type) => {
-    console.log('here 2222323232323232');
+  //new code
+  const [open, setOpen] = useState(false);
+  const [open1, setOpen1] = useState(false);
+  const [value, setValue] = useState(uType);
+  const [items, setItems] = useState([
+    {label: 'Helper', value: 'helper'},
+    {label: 'Helpee', value: 'helpee'},
+  ]);
 
+  const [genderItems, setGenderItems] = useState([
+    {label: 'Male', value: 'Male'},
+    {label: 'Female', value: 'Female'},
+  ]);
+  //
+
+  const getPickerValues = (index, picker_type) => {
     if (picker_type == 'Gender') {
       if (index == 0) {
         setGender('Male');
@@ -113,7 +122,6 @@ const ProfileScreen = props => {
       }
       set_type_placeHolder(null);
     }
-    console.log('here');
   };
 
   function checkProfileComplete() {
@@ -153,7 +161,11 @@ const ProfileScreen = props => {
         <View style={{marginLeft: 20}}>
           {profileLock === false ? (
             <TouchableOpacity
-              onPress={() => navigation.toggleDrawer()}
+              onPress={() => {
+                deviceStorage.setFirstSignup('true');
+                navigation.toggleDrawer()
+              
+              }}
               activeOpacity={0.5}>
               <Icon name="menu" size={34} />
             </TouchableOpacity>
@@ -363,13 +375,14 @@ const ProfileScreen = props => {
     }
   };
 
-  const setDisableBtnFromPickerChild = child => {
+  const setDisableBtnFromPickerChild = (child) => {
     if (checkProfileComplete() === true) {
-      // comparing equal because state is getting set after this function is execcuted
+      // comparing equal because state is getting set after this function is executed
       if (child === 'userType') {
-        if (userType === uType) {
+        if (userType !== uType) {
           setBtnDisable(false);
-        } else {
+        } 
+        else {
           setBtnDisable(true);
         }
       } else if (child === 'avatar') {
@@ -381,61 +394,49 @@ const ProfileScreen = props => {
       }
     }
   };
-  // useEffect(() => {
-  //   console.log('helper: ', helper);
-  //   console.log('helpee: ', helpee);
-  // }, [helper]);
-  // //
-  return (
-    <SafeAreaView>
-      <KeyboardAwareScrollView
-        enableOnAndroid={true}
-        keyboardShouldPersistTaps={'handled'}
-        enableResetScrollToCoords={false}
-        style={{
-          paddingTop: '10%',
-          backgroundColor: '#effdfe',
-          //paddingTop: Platform.OS === 'ios' ? getStatusBarHeight() : 0,
-        }}>
-        <View>
-          {/* PROFILE PICTURE */}
-          <UserAvatar
-            setProfilePicture={setProfilePicture}
-            profilePic={profilePic}
-            parentFunc={setDisableBtnFromPickerChild}
-          />
-          <View>
-            {/* First Name */}
-            <View style={styles.singleRow}>
-              <Text style={styles.left_fields}>{I18n.t('profile.fname')}</Text>
-              <Text style={styles.fields}>{fname}</Text>
 
-              {/* <TextInput
+  //
+  return (
+    <KeyboardAwareScrollView
+      style={{paddingTop: '10%', backgroundColor: '#effdfe'}}>
+      <View>
+        {/* PROFILE PICTURE */}
+        <UserAvatar
+          setProfilePicture={setProfilePicture}
+          profilePic={profilePic}
+          parentFunc={setDisableBtnFromPickerChild}
+        />
+        <View>
+          {/* First Name */}
+          <View style={styles.singleRow}>
+            <Text style={styles.left_fields}>{I18n.t('profile.fname')}</Text>
+            <Text style={styles.fields}>{fname}</Text>
+
+            {/* <TextInput
               style={styles.fields}
               onChangeText={(val) => setFname(val)}
               value={fname}
               //defaultValue={userFname}
               placeholder="John"
             /> */}
-            </View>
+          </View>
 
-            {/* Last Name */}
-            <View style={styles.singleRow}>
-              <Text style={styles.left_fields}>{I18n.t('profile.lname')}</Text>
-              <Text style={styles.fields}>{lname}</Text>
+          {/* Last Name */}
+          <View style={styles.singleRow}>
+            <Text style={styles.left_fields}>{I18n.t('profile.lname')}</Text>
+            <Text style={styles.fields}>{lname}</Text>
 
-              {/* <TextInput
+            {/* <TextInput
               style={styles.fields}
               onChangeText={(val) => setLname(val)}
               value={lname}
               //defaultValue={userLname}
               placeholder="Doe"
             /> */}
-            </View>
-            {/* 
+          </View>
+          {/* 
           <View style={styles.singleRow}>
             <Text style={styles.left_fields}>Email</Text>
-
             <TextInput
               style={styles.fields}
               onChangeText={(val) => setEmail(val)}
@@ -445,62 +446,98 @@ const ProfileScreen = props => {
             />
           </View> */}
 
-            {/* Address  */}
-            <View style={styles.singleRow}>
-              <Text style={styles.left_fields}>
-                {I18n.t('profile.address')}
-              </Text>
-              {userAddress !== null ? (
-                <Text style={styles.fields}>{address}</Text>
-              ) : (
-                <TextInput
-                  style={styles.fields}
-                  onChangeText={val => {
-                    setAddress(val);
-                  }}
-                  value={address}
-                  //defaultValue={userAddress}
-                  placeholder="Address"
-                />
-              )}
+          {/* Address  */}
+          <View style={styles.singleRow}>
+            <Text style={styles.left_fields}>{I18n.t('profile.address')}</Text>
+            {userAddress !== null ? (
+              <Text style={styles.fields}>{address}</Text>
+            ) : (
+              <TextInput
+                style={styles.fields}
+                onChangeText={val => {
+                  setAddress(val);
+                }}
+                value={address}
+                //defaultValue={userAddress}
+                placeholder="Address"
+              />
+            )}
+          </View>
+
+          {/* Gender */}
+          <View style={styles.singleRow}>
+            <Text style={styles.left_fields}>{I18n.t('profile.gender')}</Text>
+            {userGender !== '' ? (
+              <Text style={styles.fields}>{gender}</Text>
+            ) : (
+              // <Picker
+              //   myValue={gender}
+              //   getValues={getPickerValues}
+              //   options={options_gender}
+              //   title={I18n.t('profile.gender')}
+              //   myplaceholder={gender_placeHolder}
+              //   parentFunc={setDisableBtnFromPickerChild}
+              // />
+
+              <View
+            style={{
+              left:142
+            }}
+            >
+              <DropDownPicker
+                open={open1}
+                value={gender}
+                items={genderItems}
+                setOpen={setOpen1}
+                setValue={setGender}
+                setItems={setGenderItems}
+                // onChangeValue={value =>
+                //   setDisableBtnFromPickerChild('userType')
+                // }
+                listMode="SCROLLVIEW"
+                placeholder="Select Gender"
+                style={{
+                  borderWidth: 0,
+                  width: '50%',
+                  backgroundColor:"#effdfe"
+                }}
+                dropDownContainerStyle={{
+                  width: '50%',
+                }}
+                textStyle={{
+                  fontSize: 18,
+                  color: 'gray',
+                }}
+                placeholderStyle={{
+                  fontSize: 18,
+                  color: 'gray',
+                }}
+
+                dropDownDirection="TOP"
+              />
             </View>
+            )}
+          </View>
 
-            {/* Gender */}
-            <View style={styles.singleRow}>
-              <Text style={styles.left_fields}>{I18n.t('profile.gender')}</Text>
-              {userGender !== '' ? (
-                <Text style={styles.fields}>{gender}</Text>
-              ) : (
-                <Picker
-                  myValue={gender}
-                  getValues={getPickerValues}
-                  options={options_gender}
-                  title={I18n.t('profile.gender')}
-                  myplaceholder={gender_placeHolder}
-                  parentFunc={setDisableBtnFromPickerChild}
-                />
-              )}
-            </View>
+          {/* Age */}
+          <View style={styles.singleRow}>
+            <Text style={styles.left_fields}>{I18n.t('profile.age')}</Text>
 
-            {/* Age */}
-            <View style={styles.singleRow}>
-              <Text style={styles.left_fields}>{I18n.t('profile.age')}</Text>
+            {userAge !== null ? (
+              <Text style={styles.fields}>{age}</Text>
+            ) : (
+              <TextInput
+                style={styles.dob}
+                onChangeText={val => {
+                  setAge(val);
+                }}
+                value={age}
+                placeholder="Your Age"
+                keyboardType="numeric"
+              />
+            )}
 
-              {userAge !== null ? (
-                <Text style={styles.fields}>{age}</Text>
-              ) : (
-                <TextInput
-                  style={styles.dob}
-                  onChangeText={val => {
-                    setAge(val);
-                  }}
-                  value={age}
-                  placeholder="Your Age"
-                  keyboardType="numeric"
-                />
-              )}
-
-              {/* <TextInput
+            {/* <TextInput
               style={styles.dob}
               onChangeText={(val) => {
                 setAge(val);
@@ -509,84 +546,93 @@ const ProfileScreen = props => {
               placeholder="Your Age"
               keyboardType="numeric"
             /> */}
-            </View>
+          </View>
 
-            {/* User Type */}
-            <View style={styles.singleRow}>
-              <Text style={styles.left_fields}>{'Helper'}</Text>
-
-              {/* <Picker
+          {/* User Type */}
+          {/* <View style={styles.singleRow}>
+            <Text style={styles.left_fields}>{I18n.t("profile.type")}</Text>
+            <Picker
               myValue={uType}
               getValues={getPickerValues}
               options={options_type}
-              title={I18n.t('profile.type')}
+              title={I18n.t("profile.type")}
               myplaceholder={type_placeHolder}
               parentFunc={setDisableBtnFromPickerChild}
-            /> */}
-              <TouchableOpacity
-              //  onPress={()=>
-              //   set_Helpee(false)
-              >
-                <CheckBox
-                  checked={helper}
-                  onPress={() => {
-                    set_Helper(true);
-                    set_Helpee(false);
-                  }}
-                  containerStyle={styles.right}
-                />
-              </TouchableOpacity>
+            />
+          </View> */}
+
+          <View style={styles.singleRow}>
+            <Text style={styles.left_fields}>{I18n.t('profile.type')}</Text>
+
+            <View
+            style={{
+              left:70
+            }}
+            >
+              <DropDownPicker
+                open={open}
+                value={uType}
+                items={items}
+                setOpen={setOpen}
+                setValue={setUType}
+                setItems={setItems}
+                onChangeValue={value =>
+                  setDisableBtnFromPickerChild('userType')
+                }
+                listMode="SCROLLVIEW"
+                style={{
+                  borderWidth: 0,
+                  width: '50%',
+                  backgroundColor:"#effdfe"
+                }}
+                dropDownContainerStyle={{
+                  width: '50%',
+                }}
+                textStyle={{
+                  fontSize: 18,
+                  color: 'gray',
+                }}
+
+                dropDownDirection="TOP"
+              />
             </View>
           </View>
-          <View style={styles.singleRow}>
-            <Text style={styles.left_fields}>{'Helpee'}</Text>
-
-            <TouchableOpacity>
-              <CheckBox
-                checked={helpee}
-                onPress={() => {
-                  set_Helpee(true);
-                  set_Helper(false);
-                }}
-                containerStyle={styles.right}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.submit}>
-            {uploading === true ? (
-              <View
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                {/* <Text>{transferred} % Completed</Text> */}
-                <Text>{I18n.t('profile.indicatorText')}</Text>
-                <ActivityIndicator size="large" color="#0000ff" />
-              </View>
-            ) : (
-              <View
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Button
-                  disabled={btnDisable}
-                  containerStyle={{
-                    margin: '10%',
-
-                    // borderRadius: 120,
-                    // borderRadius: 70,
-                    width: '30%',
-                  }}
-                  title={I18n.t('profile.button')}
-                  onPress={submit}
-                />
-              </View>
-            )}
-          </View>
         </View>
-      </KeyboardAwareScrollView>
-    </SafeAreaView>
+
+        <View style={styles.submit}>
+          {uploading === true ? (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              {/* <Text>{transferred} % Completed</Text> */}
+              <Text>{I18n.t('profile.indicatorText')}</Text>
+              <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+          ) : (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Button
+                disabled={btnDisable}
+                containerStyle={{
+                  margin: '10%',
+
+                  // borderRadius: 120,
+                  // borderRadius: 70,
+                  width: '30%',
+                }}
+                title={I18n.t('profile.button')}
+                onPress={submit}
+              />
+            </View>
+          )}
+        </View>
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 
