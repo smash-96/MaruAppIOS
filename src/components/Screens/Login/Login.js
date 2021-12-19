@@ -12,6 +12,7 @@ import {
   StyleSheet,
   ScrollView,
   KeyboardAvoidingView,
+  SafeAreaView,
 } from 'react-native';
 import Authentication_Button from '../../Custom/AuthenticationButton';
 import {SocialIcon} from 'react-native-elements';
@@ -52,7 +53,7 @@ const loginSchema = yup.object({
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       'Email not valid',
     ),
-  pass: yup.string().required('Password cannot be empty').min(8),
+  pass: yup.string().required('Password cannot be empty').min(8, "Password must be atleast 8 characters"),
 });
 
 const Login = props => {
@@ -360,12 +361,13 @@ const Login = props => {
   }
 
   return (
-    <View
+    <SafeAreaView
       // enableOnAndroid={true}
       // keyboardShouldPersistTaps={'handled'}
       // enableResetScrollToCoords={false}
       style={{
         backgroundColor: '#f0ffff',
+        
       }}
       // >s
       // <View>
@@ -387,6 +389,7 @@ const Login = props => {
           alignContent: 'center',
           bottom: 0,
           width: '100%',
+          
         }}>
         <ImageBackground
           source={require('../../../assets/footLogin.png')}
@@ -401,6 +404,7 @@ const Login = props => {
         style={{
           minHeight: '100%',
           maxHeight: '100%',
+          
         }}>
         <View style={mystyles.container}>
           <Image
@@ -410,11 +414,12 @@ const Login = props => {
           />
 
           <Formik
+          
             initialValues={{email: '', pass: ''}}
             validationSchema={loginSchema}
             onSubmit={login}>
             {formikProps => (
-              <View>
+              <View style={{marginTop:"20%"}}>
                 <TextInput
                   style={styles.txtInput}
                   placeholder={I18n.t('login.emailPlaceholder')}
@@ -424,9 +429,9 @@ const Login = props => {
                   value={formikProps.values.email}
                   keyboardType="email-address"
                 />
-                {/* <Text style={styles.error}>
+                <Text style={styles.error}>
                   {formikProps.touched.email && formikProps.errors.email}
-                </Text> */}
+                </Text>
 
                 <TextInput
                   style={styles.txtInput}
@@ -437,9 +442,9 @@ const Login = props => {
                   value={formikProps.values.pass}
                 />
 
-                {/* <Text style={styles.error}>
+                <Text style={styles.error}>
                   {formikProps.touched.pass && formikProps.errors.pass}
-                </Text> */}
+                </Text>
 
                 <View style={styles.authenticationButton}>
                   <Authentication_Button
@@ -495,7 +500,7 @@ const Login = props => {
           /> */}
       {loading && <TNActivityIndicator />}
       {/* </KeyboardAvoidingView> */}
-    </View>
+    </SafeAreaView>
 
     // </KeyboardAwareScrollView>
   );
@@ -505,11 +510,13 @@ const mystyles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    
   },
   image: {
-    width: 250,
-    height: 250,
-    marginVertical: 10,
+    width: 150,
+    height: 150,
+    // marginVertical: 10,
+    resizeMode:'cover'
   },
   textTitle: {
     fontSize: 40,

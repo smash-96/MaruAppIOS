@@ -29,7 +29,14 @@ const dynamic_styles = () => {
       fontSize: 19,
       paddingLeft: '5%',
     },
-
+    error: {
+      color: 'crimson',
+      fontWeight: 'bold',
+      fontSize: 15,
+      //marginBottom: 10,
+      //marginTop: 6,
+      textAlign: 'center',
+    },
     authenticationButton: {
       marginTop: 10,
       marginBottom: 10,

@@ -1,5 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {Image, Text, View, KeyboardAvoidingView,ScrollView ,ImageBackground,StyleSheet,TextInput, Alert, Keyboard, TouchableWithoutFeedback} from 'react-native';
+import {
+  Image,
+  Text,
+  View,
+  KeyboardAvoidingView,
+  ScrollView,
+  ImageBackground,
+  StyleSheet,
+  TextInput,
+  Alert,
+  Keyboard,
+  TouchableWithoutFeedback,
+  SafeAreaView,
+} from 'react-native';
 import Authentication_Button from '../../Custom/AuthenticationButton';
 import {SocialIcon} from 'react-native-elements';
 import {Container, Content} from 'native-base';
@@ -20,7 +33,6 @@ import {
 import TNActivityIndicator from '../../Custom/TNActivityIndicator/TNActivityIndicator';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-
 const signupSchema = yup.object({
   fname: yup.string().required('First Name cannot be empty'),
   lname: yup.string().required('Last Name cannot be empty'),
@@ -31,14 +43,15 @@ const signupSchema = yup.object({
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       'Email not valid',
     ),
-  pass: yup.string().required('Password cannot be empty').min(8),
+  pass: yup.string().required('Password cannot be empty').min(8, "Password must be atleast 8 characters"),
 });
 
 const Signup = props => {
   const styles = dynamic_styles();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [keyboardDidShowListener  , setkeyboardDidShowListener]=useState()
+  const [keyboardDidShowListener, setkeyboardDidShowListener] = useState();
+
   const signup = async (values, actions) => {
     console.log('Signup');
     setLoading(true);
@@ -134,29 +147,25 @@ const Signup = props => {
   // })
 
   return (
-    <View
-    
+    <SafeAreaView
       // enableOnAndroid={true}
       // keyboardShouldPersistTaps={'handled'}
       // enableResetScrollToCoords={false}
-      style=
-      {{
- backgroundColor:'#f0ffff',
- 
-      }}
-      >
-          {/* Footer Image */}
-          <View
-            style={{
-              resizeMode: 'contain',
-              position: 'absolute',
-              //   backgroundColor: 'green',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              alignContent: 'center',
-              bottom: 0,
-              width: '100%',
-            }}>
+      style={{
+        backgroundColor: '#f0ffff',
+      }}>
+      {/* Footer Image */}
+      <View
+        style={{
+          resizeMode: 'contain',
+          position: 'absolute',
+          //   backgroundColor: 'green',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          alignContent: 'center',
+          bottom: 0,
+          width: '100%',
+        }}>
         <ImageBackground
           source={require('../../../assets/footLogin.png')}
           style={{
@@ -166,129 +175,128 @@ const Signup = props => {
         />
       </View>
 
-          <KeyboardAwareScrollView           
-          style={{
-            // backgroundColor:'red',
-            minHeight: '100%',
-            maxHeight: '100%',
-            }}>
-              {/* <TouchableWithoutFeedback>
+      <KeyboardAwareScrollView
+        style={{
+          // backgroundColor:'red',
+          minHeight: '100%',
+          maxHeight: '100%',
+        }}>
+        {/* <TouchableWithoutFeedback>
                 <View> */}
         <View style={mystyles.container}>
-        <Image
-          source={require('../../../assets/Logo.png')}
-          resizeMode="center"
-          style={mystyles.image}
-        />
-<View>
-          <Formik
-            initialValues={{fname: '', lname: '', email: '', pass: ''}}
-            validationSchema={signupSchema}
-            onSubmit={signup}>
-            {formikProps => (
-              <>
-                <TextInput
-                  style={styles.txtInput}
-                  placeholder={I18n.t('signup.fnamePlaceholder')}
-                  placeholderTextColor="#aaaaaa"
-                  onChangeText={formikProps.handleChange('fname')}
-                  onBlur={formikProps.handleBlur('fname')}
-                  value={formikProps.values.fname}
-                  keyboardType="default"
-                />
-                {/* <Text style={styles.error}>
-                    {formikProps.touched.fname && formikProps.errors.fname}
-                  </Text> */}
-
-                <TextInput
-                  style={styles.txtInput}
-                  placeholder={I18n.t('signup.lnamePlaceholder')}
-                  placeholderTextColor="#aaaaaa"
-                  onChangeText={formikProps.handleChange('lname')}
-                  onBlur={formikProps.handleBlur('lname')}
-                  value={formikProps.values.lname}
-                  keyboardType="default"
-                />
-                {/* <Text style={styles.error}>
-                    {formikProps.touched.lname && formikProps.errors.lname}
-                  </Text> */}
-
-                <TextInput
-                  style={styles.txtInput}
-                  placeholder={I18n.t('signup.emailPlaceholder')}
-                  placeholderTextColor="#aaaaaa"
-                  type="email"
-                  onChangeText={formikProps.handleChange('email')}
-                  onBlur={formikProps.handleBlur('email')}
-                  value={formikProps.values.email}
-                  keyboardType="email-address"
-                />
-                {/* <Text style={styles.error}>
-                    {formikProps.touched.email && formikProps.errors.email}
-                  </Text> */}
-
-                <TextInput
-                  style={styles.txtInput}
-                  placeholder={I18n.t('signup.passPlaceholder')}
-                  placeholderTextColor="#aaaaaa"
-                  type="password"
-                  secureTextEntry={true}
-                  onChangeText={formikProps.handleChange('pass')}
-                  value={formikProps.values.pass}
-                />
-
-                {/* <Text style={styles.error}>
-                    {formikProps.touched.pass && formikProps.errors.pass}
-                  </Text> */}
-
-                <View style={styles.authenticationButton}>
-                  <Authentication_Button
-                    title={I18n.t('signup.signup')}
-                    backGroundColor={'#FFFFFF'}
-                    textColor={'#2c88d1'}
-                    borderColor={'#2c88d1'}
-                    handlePress={formikProps.handleSubmit}
+          <Image
+            source={require('../../../assets/Logo.png')}
+            resizeMode="center"
+            style={mystyles.image}
+          />
+          <View>
+            <Formik
+              initialValues={{fname: '', lname: '', email: '', pass: ''}}
+              validationSchema={signupSchema}
+              onSubmit={signup}>
+              {formikProps => (
+                <>
+                  <TextInput
+                    style={styles.txtInput}
+                    placeholder={I18n.t('signup.fnamePlaceholder')}
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={formikProps.handleChange('fname')}
+                    onBlur={formikProps.handleBlur('fname')}
+                    value={formikProps.values.fname}
+                    keyboardType="default"
                   />
-                </View>
-              </>
-            )}
-          </Formik>
+                  <Text style={styles.error}>
+                    {formikProps.touched.fname && formikProps.errors.fname}
+                  </Text>
+
+                  <TextInput
+                    style={styles.txtInput}
+                    placeholder={I18n.t('signup.lnamePlaceholder')}
+                    placeholderTextColor="#aaaaaa"
+                    onChangeText={formikProps.handleChange('lname')}
+                    onBlur={formikProps.handleBlur('lname')}
+                    value={formikProps.values.lname}
+                    keyboardType="default"
+                  />
+                  <Text style={styles.error}>
+                    {formikProps.touched.lname && formikProps.errors.lname}
+                  </Text>
+
+                  <TextInput
+                    style={styles.txtInput}
+                    placeholder={I18n.t('signup.emailPlaceholder')}
+                    placeholderTextColor="#aaaaaa"
+                    type="email"
+                    onChangeText={formikProps.handleChange('email')}
+                    onBlur={formikProps.handleBlur('email')}
+                    value={formikProps.values.email}
+                    keyboardType="email-address"
+                  />
+                  <Text style={styles.error}>
+                    {formikProps.touched.email && formikProps.errors.email}
+                  </Text>
+
+                  <TextInput
+                    style={styles.txtInput}
+                    placeholder={I18n.t('signup.passPlaceholder')}
+                    placeholderTextColor="#aaaaaa"
+                    type="password"
+                    secureTextEntry={true}
+                    onChangeText={formikProps.handleChange('pass')}
+                    value={formikProps.values.pass}
+                  />
+
+                  <Text style={styles.error}>
+                    {formikProps.touched.pass && formikProps.errors.pass}
+                  </Text>
+
+                  <View style={styles.authenticationButton}>
+                    <Authentication_Button
+                      title={I18n.t('signup.signup')}
+                      backGroundColor={'#FFFFFF'}
+                      textColor={'#2c88d1'}
+                      borderColor={'#2c88d1'}
+                      handlePress={formikProps.handleSubmit}
+                    />
+                  </View>
+                </>
+              )}
+            </Formik>
           </View>
-          </View>
-          
-<View style={{alignItems:'center'}}> 
+        </View>
+
+        <View style={{alignItems: 'center'}}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: 'bold',
+            }}>
+            {I18n.t('signup.login')}
             <Text
               style={{
-                fontSize: 18,
+                // fontSize: 16,
                 fontWeight: 'bold',
-              }}>
-              {I18n.t('signup.login')}
-              <Text
-                style={{
-                  // fontSize: 16,
-                  fontWeight: 'bold',
-                  color: 'blue',
-                }}
-                onPress={login}>
-                {' '}
-                {I18n.t('signup.eText')}
-              </Text>
+                color: 'blue',
+              }}
+              onPress={login}>
+              {' '}
+              {I18n.t('signup.eText')}
             </Text>
-            {/* <Authentication_Button
+          </Text>
+          {/* <Authentication_Button
               title={I18n.t("signup.login")}
               backGroundColor={"#2c88d1"}
               textColor={"#FFFFFF"}
               borderColor={"#2c88d1"}
               handlePress={login}
             /> */}
-          </View>
-          {/* </View> */}
-          {/* </TouchableWithoutFeedback> */}
-          </KeyboardAwareScrollView>
- 
-      {loading && <TNActivityIndicator />}
-      </View>
+        </View>
+        {/* </View> */}
+        {/* </TouchableWithoutFeedback> */}
+      </KeyboardAwareScrollView>
 
+      {loading && <TNActivityIndicator />}
+    </SafeAreaView>
   );
 };
 
@@ -298,10 +306,11 @@ const mystyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  image: {
-    width: 250,
-    height: 250,
+    image: {
+    width: 150,
+    height: 150,
     marginVertical: 10,
+    resizeMode:'cover'
   },
   textTitle: {
     fontSize: 40,

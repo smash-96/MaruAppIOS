@@ -63,12 +63,13 @@ const UserAvatar = (props) => {
       compressImageQuality: 0.7,
     })
       .then((image) => {
-        setImage(Platform.OS === "ios" ? image.sourceURL : image.path);
+        console.log("PICTURE OBTAINED", image)
+        setImage(Platform.OS === "ios" ? image.path : image.path);
         props.setProfilePicture(
-          Platform.OS === "ios" ? image.sourceURL : image.path
+          Platform.OS === "ios" ? image.path : image.path
         ); // calling the function from parent to set state in parent
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log("PICTURE ERROR", error));
   };
 
   const choosePhotoFromLibrary = () => {
@@ -79,12 +80,13 @@ const UserAvatar = (props) => {
       compressImageQuality: 0.7,
     })
       .then((image) => {
-        setImage(Platform.OS === "ios" ? image.sourceURL : image.path);
+        console.log("PICTURE OBTAINED", image)
+        setImage(Platform.OS === "ios" ? image.path : image.path);
         props.setProfilePicture(
-          Platform.OS === "ios" ? image.sourceURL : image.path
+          Platform.OS === "ios" ? image.path : image.path
         );
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log("PICTURE ERROR", error));
   };
 
   const closeButton = () => (

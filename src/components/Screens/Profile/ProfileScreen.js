@@ -150,7 +150,7 @@ const ProfileScreen = props => {
     if (checkProfileComplete() === true) {
       setProfileLock(false);
     }
-  });
+  },[userPhoto, profilePic, userAddress, userGender, userAge, userType]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -337,8 +337,11 @@ const ProfileScreen = props => {
       //   auth.currentUser.updateProfile({ photoURL: null });
       // }
 
-      deviceStorage.setFirstSignup('true');
-      dispatch(setFirstSignup('true'));
+      if (checkProfileComplete() === true){
+        console.log("PROFILE COMPLETE");
+        deviceStorage.setFirstSignup('true');
+        dispatch(setFirstSignup('true'));
+      }
 
       // if (checkProfileComplete() === true) {
       //   setBtnDisable(true);
@@ -358,7 +361,7 @@ const ProfileScreen = props => {
       //   //setProfileLock(true);
       // }
 
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       setUploading(false);
 
       if (firstSignup === 'true') {
